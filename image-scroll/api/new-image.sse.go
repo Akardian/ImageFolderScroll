@@ -84,7 +84,7 @@ func sendEvent(list *list.List) fs.FileInfo {
 
 // Check for new files and add them to the list
 func addNewFiles(list *list.List, lastCheck time.Time) time.Time {
-	newFiles := image.CheckForNewFiles("./api", lastCheck)
+	newFiles := image.CheckForNewFiles(".", lastCheck)
 
 	for _, file := range newFiles {
 		list.PushBack(file)

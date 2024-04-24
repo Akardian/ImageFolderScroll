@@ -4,17 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="htmx"></script>
     <title>HTMX & Go - Demo</title>
 </head>
 <body class="container">
-    <h1>Crypto Price</h1>
+    <h1>Image display</h1>
 
-    <p id="price" style="font-size:40px;">Loading price...</p>
+    <p id="image-text" style="font-size:20px;">Loading first image...</p>
+    <img id="image-div" src="image"></img>
+
 
     <script>
-        const priceEl = document.getElementById("price");
+        const imageName = document.getElementById("image-text");
+        const imageDiv = document.getElementById("image-div")
 
-        const es = new EventSource("/crypto-price");
+        const es = new EventSource("/image/update");
         es.onerror = (err) => {
             console.log("onerror", err)
         };
@@ -29,8 +33,11 @@
 
         es.addEventListener("new-image", (event) => {
             const parsedData = JSON.parse(event.data);
-            const price = parsedData.data;
-            priceEl.innerText = price;
+            const name = parsedData.data;
+            imageName.innerText = name;
+
+            imageDiv.src="image/" + name;
+            console.log(imageDiv.src)
         });
     </script>
 </body>

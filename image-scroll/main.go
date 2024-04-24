@@ -1,15 +1,23 @@
 package main
 
 import (
+	"fmt"
 	"image-scroll/api"
 	"log"
 	"net/http"
 )
 
+var PORT = ":8000"
+
 func main() {
 	http.HandleFunc("/", api.PageHandler)
-	http.HandleFunc("/crypto-price", api.NewImageHandler)
-	http.HandleFunc("/image", api.ImageHandler)
+	http.HandleFunc("/htmx", api.HTMXHandler)
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	http.HandleFunc("/image/update", api.NewImageHandler)
+
+	http.HandleFunc("/image/{id}", api.ImageHandler)
+	http.HandleFunc("/image/new", api.GetImageHandler)
+
+	fmt.Println("Listening to port: " + PORT)
+	log.Fatal(http.ListenAndServe(PORT, nil))
 }

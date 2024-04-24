@@ -4,11 +4,20 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
+	"text/template"
 )
 
-func ImageHandler(w http.ResponseWriter, r *http.Request) {
+func GetImageHandler(w http.ResponseWriter, r *http.Request) {
 
-	buf, err := os.ReadFile("api/sid.jpeg")
+	page, _ := template.New("Template").Parse("<img src='api/image'</img>")
+	page.Execute(w, nil)
+}
+
+func ImageHandler(w http.ResponseWriter, r *http.Request) {
+	name := path.Base(r.RequestURI)
+
+	buf, err := os.ReadFile(name)
 
 	if err != nil {
 
