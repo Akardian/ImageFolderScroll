@@ -1,6 +1,7 @@
 package api
 
 import (
+	"image-scroll/config"
 	"log"
 	"net/http"
 	"os"
@@ -15,13 +16,11 @@ func GetImageHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func ImageHandler(w http.ResponseWriter, r *http.Request) {
-	name := path.Base(r.RequestURI)
-
+	name := config.PATH + "/" + path.Base(r.RequestURI)
 	buf, err := os.ReadFile(name)
 
 	if err != nil {
-
-		log.Fatal(err)
+		log.Fatal("Image Handler: ", err)
 	}
 
 	w.Header().Set("Content-Type", "image/*")
